@@ -44,12 +44,12 @@ jobs:
 
       - name: 🔁 Prepare backend deployment folder
         run: |
-          mkdir deploy-backend
-          cp backend/dist/server.js deploy-backend/
+          mkdir -p deploy-backend
+          cp -r backend/dist/* deploy-backend/
           mkdir -p deploy-backend/tmp
           touch deploy-backend/tmp/restart.txt
 
-      - name: 📂 Upload backend server.js and restart file via FTP
+      - name: 📂 Upload backend files and restart trigger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.thelemaschool.com
@@ -57,3 +57,4 @@ jobs:
           password: ${{ secrets.ftp_password }}
           server-dir: /api.thelemaschool.com/
           local-dir: deploy-backend/
+
