@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/api/health', (req, res) => {
-  res.send('API is Crazzy 🚀');
+  res.send('API is Good 🚀');
 });
 
 
