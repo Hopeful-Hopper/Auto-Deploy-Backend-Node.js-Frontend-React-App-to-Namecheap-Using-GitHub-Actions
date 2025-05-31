@@ -42,19 +42,20 @@ jobs:
         working-directory: backend
         run: npm run build
 
-      - name: 🔁 Prepare backend deployment folder
-        run: |
-          mkdir -p deploy-backend
-          cp -r backend/dist/* deploy-backend/
-          mkdir -p deploy-backend/tmp
-          touch deploy-backend/tmp/restart.txt
-
-      - name: 📂 Upload backend files and restart trigger via FTP
+      - name: 📂 Upload backend `dist/` via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.thelemaschool.com
           username: ${{ secrets.ftp_username }}
           password: ${{ secrets.ftp_password }}
           server-dir: /api.thelemaschool.com/
-          local-dir: deploy-backend/
+          local-dir: backend/dist/
 
+      - name: 📂 restart trigger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.thelemaschool.com
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          server-dir: /api.thelemaschool.com/tmp/
+          local-dir: backend/tmp/
