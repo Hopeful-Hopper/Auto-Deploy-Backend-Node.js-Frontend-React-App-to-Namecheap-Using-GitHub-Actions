@@ -45,7 +45,7 @@ jobs:
       - name: 🔁 Create Passenger restart file
         run: mkdir -p backend/tmp && touch backend/tmp/restart.txt
 
-      - name: 📂 Upload backend `dist/` and restart trigger via FTP
+      - name: 📂 Upload backend `server.js` and restart file via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.thelemaschool.com
