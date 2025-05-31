@@ -56,4 +56,4 @@ jobs:
           username: ${{ secrets.ftp_username }}
           password: ${{ secrets.ftp_password }}
           server-dir: /api.thelemaschool.com/
-          local-dir: deploy-backend
+          local-dir: deploy-backend/
