@@ -1,0 +1,64 @@
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+name: 🚀 Deploy Fullstack App
+
+jobs:
+  deploy:
+    name: 🎉 Fullstack Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Checkout code
+        uses: actions/checkout@v4
+
+      # FRONTEND
+      - name: 📦 Install frontend dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: 🛠 Build React app
+        working-directory: frontend
+        run: npm run build
+
+      - name: 📂 Upload frontend to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.thelemaschool.com
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          server-dir: /html.thelemaschool.com/
+          local-dir: frontend/build/
+
+      # BACKEND
+      - name: 📦 Install backend dependencies
+        working-directory: backend
+        run: npm install
+
+      - name: 🛠 Build backend app
+        working-directory: backend
+        run: npm run build
+
+      - name: 📂 Upload backend `dist/` via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.thelemaschool.com
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          server-dir: /api.thelemaschool.com/
+          local-dir: backend/dist/
+
+      - name: 🔁 Restart backend via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.ssh_host }}
+          username: ${{ secrets.ssh_username }}
+          password: ${{ secrets.ssh_password }}
+          port: 21098
+          script: |
+            cd /home/thelkmlo/api.thelemaschool.com/
+            mkdir -p tmp
+            touch tmp/restart.txt
