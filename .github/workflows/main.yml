@@ -42,17 +42,18 @@ jobs:
         working-directory: backend
         run: npm run build
 
-      - name: 🔁 Create Passenger restart file
-        run: mkdir -p backend/tmp && touch backend/tmp/restart.txt
+      - name: 🗂️ Prepare deploy folder with only server.js and restart.txt
+        run: |
+          mkdir deploy-backend
+          cp backend/dist/server.js deploy-backend/
+          mkdir -p deploy-backend/tmp
+          touch deploy-backend/tmp/restart.txt
 
-      - name: 📂 Upload backend `server.js` and restart file via FTP
+      - name: 📂 Upload backend via FTP (server.js + restart only)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.thelemaschool.com
           username: ${{ secrets.ftp_username }}
           password: ${{ secrets.ftp_password }}
           server-dir: /api.thelemaschool.com/
-          local-dir: backend/
-          include: |
-            server.js
-            tmp/restart.txt
+          local-dir: deploy-backend
