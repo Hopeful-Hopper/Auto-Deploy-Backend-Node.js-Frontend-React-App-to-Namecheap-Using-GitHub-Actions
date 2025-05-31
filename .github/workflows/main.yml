@@ -51,11 +51,14 @@ jobs:
           server-dir: /api.thelemaschool.com/
           local-dir: backend/dist/
 
-      - name: 📂 restart trigger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: 🔁 Restart backend via SSH
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          server: ftp.thelemaschool.com
-          username: ${{ secrets.ftp_username }}
-          password: ${{ secrets.ftp_password }}
-          server-dir: /api.thelemaschool.com/tmp/
-          local-dir: backend/tmp/
+          host: ${{ secrets.ssh_host }}
+          username: ${{ secrets.ssh_username }}
+          password: ${{ secrets.ssh_password }}
+          port: 21098
+          script: |
+            cd /home/thelkmlo/api.thelemaschool.com/
+            mkdir -p tmp
+            touch tmp/restart.txt
