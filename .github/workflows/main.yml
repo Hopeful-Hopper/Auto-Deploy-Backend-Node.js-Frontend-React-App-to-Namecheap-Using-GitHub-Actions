@@ -4,11 +4,11 @@ on:
       - main
   workflow_dispatch:
 
-name: Deploy Fullstack App
+name: 🚀 Deploy Fullstack App
 
 jobs:
   deploy:
-    name: Fullstack Deploy
+    name: 🎉 Fullstack Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -45,7 +45,7 @@ jobs:
       - name: 🔁 Create Passenger restart file
         run: mkdir -p backend/tmp && touch backend/tmp/restart.txt
 
-      - name: 📂 Upload backend `dist/` and restart file via FTP
+      - name: 📂 Upload backend `dist/` and restart trigger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.thelemaschool.com
@@ -54,5 +54,5 @@ jobs:
           server-dir: /api.thelemaschool.com/
           local-dir: backend/
           include: |
-            dist/**
+            server.js
             tmp/restart.txt
