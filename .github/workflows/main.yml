@@ -52,6 +52,7 @@ jobs:
           local-dir: backend/dist/
 
       - name: 🧼 Prepare tmp directory with fresh restart.txt
+        working-directory: backend
         run: |
           mkdir -p tmp
           date > tmp/restart.txt
