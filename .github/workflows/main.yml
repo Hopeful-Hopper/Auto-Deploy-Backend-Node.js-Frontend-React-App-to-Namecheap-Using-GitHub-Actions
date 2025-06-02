@@ -55,8 +55,7 @@ jobs:
         working-directory: backend
         run: |
           mkdir -p tmp
-          date > tmp/restart.txt
-
+          touch tmp/restart.txt
 
       - name: 📂 restart trigger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
