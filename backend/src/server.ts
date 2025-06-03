@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/api/health', (req, res) => {
-  res.send('API is Running 🚀');
+  res.send('API is still Running 🚀');
 });
 
 
